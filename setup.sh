@@ -1,7 +1,5 @@
 #! /bin/bash
 
-# SSH, FTP, HTTP, MariaDB, DNS
-
 apt install openssh-server -y
 systemctl start sshd
 
@@ -26,5 +24,20 @@ chmod 700 /home/ssh-user/.ssh
 chmod 600 /home/ssh-user/.ssh/authorized_keys
 
 apt install vsftpd -y
-systemctl start vsftpd
+
+sed -i 's/anonymous_enable=NO/anonymous_enable=YES/g' /etc/vsftpd.conf
+touch /srv/ftp/iloveftp.txt
+echo iloveftp > iloveftp.txt
+systemctl restart vsftpd
+
+apt install apache2 -y
+systemctl start apache2
+
+echo "Hello World!" > /var/www/html/index.html
+
+apt install bind9 dnsutils -y
+
+
+
+apt install mariadb-server -y
 
