@@ -40,7 +40,10 @@ echo "Apache setup"
 
 apt install bind9 dnsutils -y
 
-
+echo -e "zone \"local\" {type master\;file \"/etc/bind/db.local\;\"\;} >> /etc/bind/named.conf.local"
+echo -e "test\tIN\tA\t10.10.10.10"
+systemctl restart bind9
+echo "DNS setup"
 
 apt install mariadb-server -y
 
@@ -48,4 +51,7 @@ mariadb -u root -e "CREATE DATABASE cyberforce; CREATE TABLE cyberforce.supersec
 mariadb -u root -e "CREATE USER 'scoring-sql'@'%' IDENTIFIED BY 'password';"
 mariadb -u root -e "GRANT SELECT ON cyberforce.supersecret TO 'scoring-sql'@'%'; FLUSH PRIVILEGES;"
 sed -i 's/bind-address            = 127.0.0.1/bind-address=0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+systemctl restart mariadb
 echo "DB setup"
+
+echo "----- DONE -----"
