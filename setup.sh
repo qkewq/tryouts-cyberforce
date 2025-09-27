@@ -31,7 +31,7 @@ echo "Apache setup"
 
 apt install bind9 dnsutils -y
 
-echo -e "zone \"local\" {type master\;file \"/etc/bind/db.local\;\"\;}" >> /etc/bind/named.conf.local
+echo -e "zone \"local\" {type master;file \"/etc/bind/db.local\";};" >> /etc/bind/named.conf.local
 echo -e "test\tIN\tA\t10.10.10.10" >> /etc/bind/db.local
 systemctl restart bind9
 echo "DNS setup"
