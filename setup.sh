@@ -22,6 +22,7 @@ chown ssh-user /home/ssh-user/.ssh
 chown ssh-user /home/ssh-user/.ssh/authorized_keys
 chmod 700 /home/ssh-user/.ssh
 chmod 600 /home/ssh-user/.ssh/authorized_keys
+echo "SSH setup"
 
 apt install vsftpd -y
 
@@ -29,11 +30,13 @@ sed -i 's/anonymous_enable=NO/anonymous_enable=YES/g' /etc/vsftpd.conf
 touch /srv/ftp/iloveftp.txt
 echo iloveftp > iloveftp.txt
 systemctl restart vsftpd
+echo "FTP setup"
 
 apt install apache2 -y
 systemctl start apache2
 
 echo "Hello World!" > /var/www/html/index.html
+echo "Apache setup"
 
 apt install bind9 dnsutils -y
 
@@ -41,3 +44,8 @@ apt install bind9 dnsutils -y
 
 apt install mariadb-server -y
 
+mariadb -u root -e "CREATE DATABASE cyberforce; CREATE TABLE cyberforce.supersecret (data INT NOT NULL DEFAULT 7);"
+mariadb -u root -e "CREATE USER 'scoring-sql'@'%' IDENTIFIED BY 'password';"
+mariadb -u root -e "GRANT SELECT ON cyberforce.supersecret TO 'scoring-sql'@'%'; FLUSH PRIVILEGES;"
+sed -i 's/bind-address            = 127.0.0.1/bind-address=0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+echo "DB setup"
